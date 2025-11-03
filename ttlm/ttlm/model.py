@@ -5,7 +5,7 @@ import torch
 import torch.nn.functional as F
 from torch import Tensor, nn
 
-from ttlm.tokenizer import Tokenizer
+from ttlm.tokenizer.base import Tokenizer
 
 
 class RMSNorm(nn.Module):
