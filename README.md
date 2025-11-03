@@ -30,11 +30,16 @@ work_dir = '/content/drive/MyDrive/colab-projects'
 os.makedirs(work_dir, exist_ok=True)
 os.chdir(work_dir)
 if not os.path.exists('lm-course'):
-    !git clone https://github.com/{your-username}/lm-course.git
+    !git clone https://github.com/cottascience/lm-course.git
+!ln -sf /content/drive/MyDrive/colab-projects/lm-course /root/lm-course
 os.chdir('lm-course')
-!git config --global user.email "{your-email}@example.com"
-!git config --global user.name "{your-name}"
+!git config --global user.email "your-email@example.com"
+!git config --global user.name "Your Name"
 !pip install colab-ssh
+!chmod +x /content/cloudflared 2>/dev/null || true
+!chmod +x ./cloudflared 2>/dev/null || true
+!chmod +x ~/.cloudflared 2>/dev/null || true
+!find /content -name "cloudflared" -exec chmod +x {} \; 2>/dev/null || true
 from colab_ssh import launch_ssh_cloudflared
 import getpass
 password = getpass.getpass("Enter SSH password: ")
