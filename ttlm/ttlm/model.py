@@ -1,10 +1,11 @@
 """Cowboy's transformer-based next-token prediction language model."""
 
 from typing import Optional
-
 import torch
 import torch.nn.functional as F
 from torch import Tensor, nn
+
+from ttlm.tokenizer import Tokenizer
 
 
 class RMSNorm(nn.Module):
@@ -231,10 +232,11 @@ class Model(nn.Module):
         """Number of parameters in the model."""
         return sum(p.numel() for p in self.parameters())
 
-    def to_ckpt(self, path: str) -> None:
+    def to_ckpt(self, path: str, tokenizer: Tokenizer) -> None:
         """Saves model state and config to a checkpoint file."""
         checkpoint = {
             "state_dict": self.cpu().state_dict(),
+            "tokenizer": tokenizer,
             "config": {
                 "vocab_size": self.vocab_size,
                 "hidden_dim": self.hidden_dim,
@@ -262,7 +264,8 @@ class Model(nn.Module):
             softcap=config["softcap"],
         )
         model.load_state_dict(checkpoint["state_dict"])
-        return model
+        tokenizer = checkpoint["tokenizer"]
+        return model, tokenizer
 
     def forward(self, input_ids: Tensor) -> dict[str, Tensor]:
         """Forward pass returning logits."""

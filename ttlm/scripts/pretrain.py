@@ -2,6 +2,7 @@
 
 import argparse
 import logging
+import token
 
 logging.basicConfig(level=logging.INFO)
 import os
@@ -87,7 +88,7 @@ def pretrain(config: PreTrainingConfig) -> None:
         if world.is_main_process:
             logging.info("Pre-training completed successfully, saving model...")
             os.makedirs(f"logs/{args.experiment}", exist_ok=True)
-            model.to_ckpt(f"logs/{args.experiment}.ckpt")
+            model.to_ckpt(f"logs/{args.experiment}.ckpt", tokenizer=tokenizer)
         world.barrier()
 
 
