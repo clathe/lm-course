@@ -15,7 +15,8 @@ uv sync
 
 # Start learning
 uv run python -m scripts.pretrain --experiment=default (or any other experiment, like default_cpu for cpu only job)
-
+```
+```
 
 ## Using Google Colab
 
@@ -39,7 +40,6 @@ from colab_ssh import launch_ssh_cloudflared
 import getpass
 password = getpass.getpass("Enter SSH password: ")
 launch_ssh_cloudflared(password=password)
-
 ```
 
 
