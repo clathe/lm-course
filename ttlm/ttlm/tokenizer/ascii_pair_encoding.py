@@ -4,7 +4,7 @@ from ttlm.tokenizer.base import Tokenizer
 
 
 class ASCIIPairEncoding(Tokenizer):
-    def __init__(self, vocab_size: int) -> None:
+    def __init__(self, vocab_size: int = 512) -> None:
         super().__init__()
         self._vocab_size = vocab_size
         self.merges: dict[tuple[int, int], int] = {}
@@ -55,15 +55,14 @@ class ASCIIPairEncoding(Tokenizer):
             self.unk_token: self.unk_token_id,
         }
 
-    @staticmethod
-    def preprocess_text(text: str) -> list[int]:
+    def preprocess_text(self, text: str) -> list[int]:
         token_sequence = []
         for char in text:
             ascii_val = ord(char)
             if ascii_val < 128:
                 token_sequence.append(ascii_val)
             else:
-                raise ValueError(f"Character '{char}' is not in ASCII range.")
+                token_sequence.append(self.unk_token_id)
         return token_sequence
 
     def train(self, texts: list[str]) -> None:
