@@ -7,5 +7,4 @@ CFG = PreTrainingConfig(
     tokenizer=TokenizerConfig(
         module=ttlm.tokenizer.ascii_pair_encoding.ASCIIPairEncoding,
     ),
-    device="cpu",
 )
