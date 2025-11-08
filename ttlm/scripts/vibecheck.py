@@ -34,7 +34,7 @@ def main():
             top_k=args.top_k,
         )
 
-        generated_tokens = output_ids[0].tolist()
+        generated_tokens = output_ids.tolist()
         print(f"\nSample {i + 1}:")
         print(f"Tokens: {generated_tokens}")
         print(f"Text: {tokenizer.decode(generated_tokens)}")
