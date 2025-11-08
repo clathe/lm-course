@@ -1,7 +1,9 @@
-import torch
 import argparse
-from ttlm.model import Model
+
+import torch
 from ttlm.engine import generate
+from ttlm.model import Model
+
 
 def main():
     parser = argparse.ArgumentParser(description="Generate samples from a checkpoint")
@@ -21,10 +23,8 @@ def main():
     print(f"Model parameters: {model.num_parameters:,}")
     print(f"Generating {args.num_samples} samples...")
 
-    # Generate samples unconditionally (start with a single token, e.g., 0 or BOS)
     for i in range(args.num_samples):
-        # Start with token 0 (unconditional generation)
-        input_ids = torch.tensor([[0]], dtype=torch.long, device=args.device)
+        input_ids = torch.tensor([[tokenizer.bos_token_id]], dtype=torch.long, device=args.device)
 
         output_ids = generate(
             model=model,
