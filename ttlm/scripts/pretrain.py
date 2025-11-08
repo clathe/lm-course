@@ -8,12 +8,11 @@ logging.basicConfig(level=logging.INFO)
 import os
 
 import torch
+from experiments.loader import load as load_experiment
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data import DataLoader
 from torch.utils.data.distributed import DistributedSampler
-
-from experiments.loader import load as load_experiment
 from ttlm.config import PreTrainingConfig
 from ttlm.dataset.tinystories import TinyStories
 from ttlm.dist import World
@@ -25,6 +24,7 @@ def pretrain(config: PreTrainingConfig) -> None:
     with World(device=config.device) as world:
         tokenizer = config.tokenizer.module()
         dataset = TinyStories()
+        tokenizer.train(dataset.data)
         sampler = (
             DistributedSampler(dataset, drop_last=True) if world.distributed else None
         )
